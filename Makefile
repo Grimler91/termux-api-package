@@ -1,4 +1,4 @@
-CFLAGS += -std=c11 -Wall -Wextra -pedantic -Werror
+CFLAGS += -std=c11 -Wall -Wextra -pedantic
 PREFIX ?= /data/data/com.termux/files/usr
 
 termux-api: termux-api.c
