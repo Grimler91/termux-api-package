@@ -31,3 +31,10 @@ install(
   FILES ${CMAKE_CURRENT_SOURCE_DIR}/termux-usb.h
   TYPE INCLUDE
 )
+
+add_executable(minimal-enumerate test/minimal-enumerate.c termux-usb.h)
+target_include_directories(
+  minimal-enumerate
+  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+)
+target_link_libraries(minimal-enumerate PUBLIC termux-usb ${Protobuf_LIBRARIES})
