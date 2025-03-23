@@ -38,3 +38,20 @@ target_include_directories(
   PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
 )
 target_link_libraries(minimal-enumerate PUBLIC termux-usb ${Protobuf_LIBRARIES})
+
+protobuf_generate(
+  LANGUAGE CPP
+  GENERATE_EXTENSIONS .pb.cc
+  OUT_VAR PROTO_CPP_SRCS
+  PROTOS proto/UsbAPI.proto
+)
+add_executable(termux-api-mock-usb test/termux-api-mock-usb.cpp ${PROTO_CPP_SRCS} ${PROTO_CPP_HDRS})
+target_include_directories(
+  termux-api-mock-usb
+  PUBLIC ${PROTOBUF_INCLUDE_DIRS}
+  PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/proto
+)
+# Linking against ${Protobuf_LIBRARIES} below instead of
+# protobuf::libprotobuf fails to compile with lots of undefined symbol
+# errors, while protobuf::libprotobuf succeeds for whatever reason.
+target_link_libraries(termux-api-mock-usb PRIVATE protobuf::libprotobuf)
